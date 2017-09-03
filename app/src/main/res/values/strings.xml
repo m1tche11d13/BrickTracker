@@ -2,4 +2,6 @@
     <string name="app_name">BrickInventory</string>
     <string name="search_button_text">Search</string>
     <string name="search_tips">Search by set number, name, or theme.</string>
+    <string name="year">Year</string>
+    <string name="part_count">Part Count</string>
 </resources>
