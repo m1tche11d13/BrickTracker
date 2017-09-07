@@ -2,8 +2,10 @@ package com.mitchell.daniel.brickinventory;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.edmodo.rangebar.RangeBar;
@@ -11,6 +13,11 @@ import com.edmodo.rangebar.RangeBar;
 import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity {
+
+    int leftYear = 0;
+    int rightYear = 0;
+    int leftParts = 0;
+    int rightParts = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,8 @@ public class SearchActivity extends AppCompatActivity {
         final TextView yearIndex = (TextView) findViewById(R.id.year_index);
         final TextView partCountIndex = (TextView) findViewById(R.id.part_count_index);
 
+        final EditText searchBox = (EditText) findViewById(R.id.search_box);
+
         yearIndex.setText("1950 - " + Integer.toString(year));
         partCountIndex.setText("0 - unlimited");
 
@@ -31,6 +40,8 @@ public class SearchActivity extends AppCompatActivity {
         year_selection_bar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int leftIndex, int rightIndex) {
+                leftYear = leftIndex;
+                rightYear = rightIndex;
                 yearIndex.setText(Integer.toString(leftIndex + 1950) + " - " + Integer.toString(rightIndex + 1950));
             }
         });
@@ -41,11 +52,12 @@ public class SearchActivity extends AppCompatActivity {
         part_count_selection_bar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int leftIndex, int rightIndex) {
+                leftParts = leftIndex;
+                rightParts = rightIndex;
                 if(rightIndex == 100)
                     partCountIndex.setText(Integer.toString(leftIndex*50) + " - unlimited");
                 else
                     partCountIndex.setText(Integer.toString(leftIndex*50) + " - " + Integer.toString(rightIndex*50));
-
             }
         });
 
@@ -53,7 +65,20 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String url = "https://rebrickable.com/api/v3/lego/sets/?min_year=";
+                url += Integer.toString(leftYear + 1950);
+                url += "&max_year=";
+                url += Integer.toString(rightYear + 1950);
+                url += "&min_parts=";
+                url += Integer.toString(leftParts*50);
+                if(rightParts != 100) {
+                    url += "&max_parts=";
+                    url += Integer.toString(rightParts*50);
+                }
+                url += "&search=";
+                url += searchBox.getText();
 
+                new SearchBrickDataTask().execute(url);
             }
         });
     }
