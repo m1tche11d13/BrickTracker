@@ -34,7 +34,7 @@ public class SearchActivity extends AppCompatActivity {
         yearIndex.setText("1950 - " + Integer.toString(year));
         partCountIndex.setText("0 - unlimited");
 
-        RangeBar year_selection_bar = (RangeBar) findViewById(R.id.year_selection_bar);
+        final RangeBar year_selection_bar = (RangeBar) findViewById(R.id.year_selection_bar);
         year_selection_bar.setTickCount(year - 1949);
         year_selection_bar.setTickHeight(0);
         year_selection_bar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        RangeBar part_count_selection_bar = (RangeBar) findViewById(R.id.part_count_selection_bar);
+        final RangeBar part_count_selection_bar = (RangeBar) findViewById(R.id.part_count_selection_bar);
         part_count_selection_bar.setTickCount(101);
         part_count_selection_bar.setTickHeight(0);
         part_count_selection_bar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
@@ -65,6 +65,11 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                leftYear = year_selection_bar.getLeftIndex();
+                rightYear = year_selection_bar.getRightIndex();
+                leftParts = part_count_selection_bar.getLeftIndex();
+                rightParts = part_count_selection_bar.getRightIndex();
+
                 String url = "https://rebrickable.com/api/v3/lego/sets/?min_year=";
                 url += Integer.toString(leftYear + 1950);
                 url += "&max_year=";
@@ -78,7 +83,7 @@ public class SearchActivity extends AppCompatActivity {
                 url += "&search=";
                 url += searchBox.getText();
 
-                new SearchBrickDataTask().execute(url);
+                new SearchBrickDataTask(SearchActivity.this).execute(url);
             }
         });
     }

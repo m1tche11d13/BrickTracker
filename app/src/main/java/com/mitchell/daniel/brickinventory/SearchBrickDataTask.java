@@ -1,6 +1,8 @@
 package com.mitchell.daniel.brickinventory;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,29 +13,29 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by argetlam on 9/3/2017.
- */
-
 public class SearchBrickDataTask extends AsyncTask<String, Void, String> {
 
-    public static final String REQUEST_METHOD = "GET";
-    public static final int READ_TIMEOUT = 15000;
-    public static final int CONNECTION_TIMEOUT = 15000;
+    private final Context mContext;
 
-    final private String REBRICKABLE_API_KEY = "key 6c17c2c742a2c63ccf783df3f9c02a0b";
-    SearchBrickDataTask(){
-
+    SearchBrickDataTask(Context mContext){
+        this.mContext = mContext;
     }
 
     @Override
     protected String doInBackground(String... params){
+
+        String REQUEST_METHOD = "GET";
+        int READ_TIMEOUT = 15000;
+        int CONNECTION_TIMEOUT = 15000;
+        String REBRICKABLE_API_KEY = "key 6c17c2c742a2c63ccf783df3f9c02a0b";
 
         String url = params[0];
         String result = "";
         String inputLine = "";
 
         try{
+            Log.e("URL", url);
+
             URL myUrl = new URL(url);
             HttpsURLConnection connection = (HttpsURLConnection) myUrl.openConnection();
 
@@ -62,7 +64,6 @@ public class SearchBrickDataTask extends AsyncTask<String, Void, String> {
         }
 
         catch(IOException e){
-            Log.e("ERR",e.getMessage());
             e.printStackTrace();
             result = null;
         }
@@ -73,5 +74,9 @@ public class SearchBrickDataTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String string){
         super.onPostExecute(string);
+        Intent intent = new Intent(mContext, SearchResultsDisplayActivity.class);
+        intent.putExtra("JSON_RESULTS", string);
+        mContext.startActivity(intent);
+        ((Activity)mContext).finish();
     }
 }
