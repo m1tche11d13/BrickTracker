@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BrickInventoryRepo.iml" filepath="$PROJECT_DIR$/BrickInventoryRepo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/brick_tracker.iml" filepath="$PROJECT_DIR$/brick_tracker.iml" />
     </modules>
   </component>
 </project>
