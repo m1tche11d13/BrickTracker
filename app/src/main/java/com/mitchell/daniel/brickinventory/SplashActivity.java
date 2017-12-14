@@ -11,7 +11,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Intent searchIntent = new Intent(SplashActivity.this, SearchActivity.class);
-        startActivity(searchIntent);
+        Intent getActivityIntent = new Intent(SplashActivity.this, GetSetActivity.class);
+        startActivity(getActivityIntent);
     }
 }
